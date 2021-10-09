@@ -5,9 +5,21 @@ using namespace std;
 // maybe a different class for different execution types
 
 /* GLOBAL VARIABLES */
+ /*
+	MVE2DIR,
+	BYEBYE,
+	HISTORY,
+	REPLAY,
+	START,
+	BCKGRND,
+	DALEK,
+	REPEAT,
+	DALEKALL
+*/
+
+
 //char * __CURRENTDIR = "/home";
 //char * __USER = "david";
-
 
 class Shell {
 	private:
@@ -16,27 +28,82 @@ class Shell {
 
 	public:
 		Shell(string dir, string user) {
-			cout << "I'm making a shell" << endl;
 			this->CURRENTDIR = dir;
 			this->USER = user;
 		}
 		
-		string getDir(){ 
+		string getUser(){ 
 			return this->USER;
-
 		}
 
-		string getUser() {
+		string getDir() {
 			return this->CURRENTDIR;
 		}
 };
+
+class Programs {
+	public:
+		
+		static ERROR whereami(Shell &shell) {
+			cout << shell.getDir() << endl;
+			return SUCCESS;
+		}
+
+		static ERROR callProgram(PROGRAM program, Shell &shell) {
+			switch (program) {
+				case MVE2DIR:
+					break;
+				case WHREAMI:
+					whereami(shell);
+					break;
+				case BYEBYE:
+					break;
+				case HISTORY:
+					break;
+				case REPLAY:
+					break;
+				case START:
+					break;
+				case BCKGRND:
+					break;
+				case DALEK:
+					break;
+				case REPEAT:
+					break;
+				case DALEKALL:
+					break;
+				default:
+					return PRGM_DNE;
+			}
+
+			return SUCCESS;
+		}
+
+		static PROGRAM findMatch(string candidate) {
+			return MVE2DIR;
+		}
+
+	private:
+		static const inline string FUNC_NAMES[] = {
+			"movetodir",
+			"whereami",
+			"byebye",
+			"history",
+			"replay",
+			"start",
+			"background",
+			"dalek",
+			"repeat",
+			"dalekall"
+		};
+};
+
 /* FUNCTIONS */
 void loop(Shell &shell);
-void whereami(Shell &shell);
 // functions that determines the system for terminal creation
 
 int main(int argc, char * argv[]) {
-	cout << "got em" << endl;
+	//cout << "got em" << endl;
 	if (argc > 1) {
 		//cout << "hello there mis lady" << argv[0] << endl;
 		Shell shell("/home", "david");
@@ -70,8 +137,16 @@ void loop(Shell &shell) {
 		cin.get(character);
 
 		while (character != '\n') {
-			cin.get(character);
+			if (character == ' ') {
+
+				PROGRAM currentProgram = Programs::findMatch(input);
+				Programs::callProgram(currentProgram, shell);
+				cin.get(character); 
+				continue;
+			}
+
 			input += character;
+			cin.get(character);
 		}
 
 		cout << input;
@@ -80,6 +155,3 @@ void loop(Shell &shell) {
 	}
 }
 
-void whereami(Shell &shell) {
-	cout << shell.getDir() << endl;
-}

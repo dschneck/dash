@@ -12,19 +12,22 @@
 
 	/* STRUCT and ENUMS */
 	enum ERROR {
-		FILE_DNE	
+		SUCCESS = 0,
+		FILE_DNE,
+		PRGM_DNE
 	};
 
 	enum PROGRAM {
 		MVE2DIR,
+		WHREAMI,
 		BYEBYE,
 		HISTORY,
 		REPLAY,
 		START,
 		BCKGRND,
-		DALEKPID,
+		DALEK,
 		REPEAT,
-		DALEKALL
+		DALEKALL,
 	};
 
 	/* FUNCTIONS */
