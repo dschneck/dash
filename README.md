@@ -10,7 +10,7 @@
 
 ## TODO ##
 - - - -
-- [] Basic Shell Layout
+- [x] Basic Shell Layout
 - [] implement __movetodir__
 - [] implement __whereami__
 - [] implement __history__

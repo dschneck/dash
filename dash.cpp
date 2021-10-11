@@ -2,42 +2,34 @@
 using namespace std;
 
 /* CLASSES */
-// maybe a different class for different execution types
-
-/* GLOBAL VARIABLES */
- /*
-	MVE2DIR,
-	BYEBYE,
-	HISTORY,
-	REPLAY,
-	START,
-	BCKGRND,
-	DALEK,
-	REPEAT,
-	DALEKALL
-*/
-
-
-//char * __CURRENTDIR = "/home";
-//char * __USER = "david";
 
 class Shell {
 	private:
-		string CURRENTDIR;
+		char CURRENTDIR[100];
 		string USER;
+		int PID;
 
 	public:
-		Shell(string dir, string user) {
-			this->CURRENTDIR = dir;
+		Shell(string user) {
+			getcwd(this->CURRENTDIR, 100);
 			this->USER = user;
+			this->PID = getpid();
 		}
 		
+		void setDir(char * dir) {
+			//this->CURRENTDIR = dir;
+		}
+
 		string getUser(){ 
 			return this->USER;
 		}
 
 		string getDir() {
-			return this->CURRENTDIR;
+			return string(this->CURRENTDIR);
+		}
+
+		int getShellPID() {
+			return this->PID;
 		}
 };
 
@@ -45,15 +37,28 @@ class Programs {
 	public:
 		
 		static ERROR whereami(Shell &shell) {
-			cout << shell.getDir() << endl;
+			string path = "";
+			path = shell.getDir();
+
+			if (path == "") {
+				return NO_PATH_FOUND;
+			}
+
+			cout << '\n' << shell.getDir() << endl;
+
 			return SUCCESS;
 		}
 
-		static ERROR callProgram(PROGRAM program, Shell &shell) {
+		static ERROR callProgram(int programIndex, Shell &shell) {
+			if (programIndex == -1) return PRGM_DNE;
+
+			PROGRAM program = PROGRAM(programIndex);
+
 			switch (program) {
 				case MVE2DIR:
 					break;
 				case WHREAMI:
+					cout << "Calling whereami... "  << endl;
 					whereami(shell);
 					break;
 				case BYEBYE:
@@ -79,8 +84,20 @@ class Programs {
 			return SUCCESS;
 		}
 
-		static PROGRAM findMatch(string candidate) {
-			return MVE2DIR;
+		// This function will return the index of reserved[] that has the match
+		// If there is no match, it will return -1
+		static int checkIfProgram(string buffer) {
+			int ret = -1;
+			int length = (sizeof(FUNC_NAMES)/sizeof(*FUNC_NAMES));
+
+			for (int i = 0; i < length; i++) {
+				if (buffer == FUNC_NAMES[i]) {
+					ret = i;
+					break;
+				}
+			}
+
+			return ret;
 		}
 
 	private:
@@ -96,6 +113,21 @@ class Programs {
 			"repeat",
 			"dalekall"
 		};
+
+		/*
+		static const inline PROGRAM FUNC_ENUMS[] = {
+			MVE2DIR,
+			WHREAMI,
+			BYEBYE,
+			HISTORY,
+			REPLAY,
+			START,
+			BCKGRND,
+			DALEK,
+			REPEAT,
+			DALEKALL
+		};
+		*/
 };
 
 /* FUNCTIONS */
@@ -106,7 +138,7 @@ int main(int argc, char * argv[]) {
 	//cout << "got em" << endl;
 	if (argc > 1) {
 		//cout << "hello there mis lady" << argv[0] << endl;
-		Shell shell("/home", "david");
+		Shell shell("david");
 		loop(shell);
 		return 0;
 	}
@@ -128,6 +160,7 @@ int main(int argc, char * argv[]) {
 // Serves as the main loop of the shell
 // accepts input, manages state, and runs functions
 void loop(Shell &shell) {
+	int programIndex;
 	char character;
 	string input;
 
@@ -139,8 +172,11 @@ void loop(Shell &shell) {
 		while (character != '\n') {
 			if (character == ' ') {
 
-				PROGRAM currentProgram = Programs::findMatch(input);
-				Programs::callProgram(currentProgram, shell);
+				programIndex = Programs::checkIfProgram(input);
+				cout << "Program index is : " << programIndex << endl;
+
+				Programs::callProgram(programIndex, shell);
+
 				cin.get(character); 
 				continue;
 			}
@@ -149,7 +185,13 @@ void loop(Shell &shell) {
 			cin.get(character);
 		}
 
-		cout << input;
+		programIndex = Programs::checkIfProgram(input);
+		cout << "Program index is : " << programIndex << endl;
+
+		Programs::callProgram(programIndex, shell);
+
+
+		cout << input << '\n';
 		cout << shell.getUser() << "@dash " << shell.getDir() << "# ";
 		input = "";
 	}

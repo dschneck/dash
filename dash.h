@@ -13,6 +13,7 @@
 	/* STRUCT and ENUMS */
 	enum ERROR {
 		SUCCESS = 0,
+		NO_PATH_FOUND,
 		FILE_DNE,
 		PRGM_DNE
 	};
@@ -27,7 +28,7 @@
 		BCKGRND,
 		DALEK,
 		REPEAT,
-		DALEKALL,
+		DALEKALL
 	};
 
 	/* FUNCTIONS */
