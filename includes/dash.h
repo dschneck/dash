@@ -5,31 +5,17 @@
 	#include <stdlib.h>
 	#include <unistd.h>
 	#include <stdio.h>
+	#include <sys/stat.h>
 
 	#include <iostream>
 	#include <iomanip>
 	#include <cstdlib>
 
-	/* STRUCT and ENUMS */
-	enum ERROR {
-		SUCCESS = 0,
-		NO_PATH_FOUND,
-		FILE_DNE,
-		PRGM_DNE
-	};
-
-	enum PROGRAM {
-		MVE2DIR,
-		WHREAMI,
-		BYEBYE,
-		HISTORY,
-		REPLAY,
-		START,
-		BCKGRND,
-		DALEK,
-		REPEAT,
-		DALEKALL
-	};
+	#include "Shell.hpp"
+	#include "Programs.hpp"
+	#include "Node.hpp"
+	#include "History.hpp"
+	#include "codes.h"
 
 	/* FUNCTIONS */
 	void printError(ERROR code);

@@ -1,5 +1,8 @@
 CC=g++
-CFLAGS= -Wall -W -I.
+CFLAGS= -Wall -W -I ./includes
+
+DEPNDECIES=
+EXEC=run.out
 
 dash:
-	$(CC) $(CFLAGS) -o run.out dash.cpp
+	$(CC) $(CFLAGS) -o $(EXEC) dash.cpp
