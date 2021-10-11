@@ -44,7 +44,7 @@ class Programs {
 				return NO_PATH_FOUND;
 			}
 
-			cout << '\n' << shell.getDir() << endl;
+			cout << shell.getDir() << endl;
 
 			return SUCCESS;
 		}
@@ -58,7 +58,6 @@ class Programs {
 				case MVE2DIR:
 					break;
 				case WHREAMI:
-					cout << "Calling whereami... "  << endl;
 					whereami(shell);
 					break;
 				case BYEBYE:
@@ -113,21 +112,6 @@ class Programs {
 			"repeat",
 			"dalekall"
 		};
-
-		/*
-		static const inline PROGRAM FUNC_ENUMS[] = {
-			MVE2DIR,
-			WHREAMI,
-			BYEBYE,
-			HISTORY,
-			REPLAY,
-			START,
-			BCKGRND,
-			DALEK,
-			REPEAT,
-			DALEKALL
-		};
-		*/
 };
 
 /* FUNCTIONS */
@@ -151,7 +135,7 @@ int main(int argc, char * argv[]) {
 	//cout << "I am in main boi" << endl;
 	//system("open -a Terminal");
 	int error = execv("./run.out", args);
-	if (error == -1) printf("error");
+	//if (error == -1) printf("error");
 	//free(*args);
 	//free(*args[0]);
 	return 0;
@@ -164,7 +148,7 @@ void loop(Shell &shell) {
 	char character;
 	string input;
 
-	cout << "\n" << shell.getUser() << "@dash " << shell.getDir() << "# ";
+	cout << "\n" << shell.getUser() << "@dash " << shell.getDir() << " # ";
 
 	while (1) {
 		cin.get(character);
@@ -173,7 +157,7 @@ void loop(Shell &shell) {
 			if (character == ' ') {
 
 				programIndex = Programs::checkIfProgram(input);
-				cout << "Program index is : " << programIndex << endl;
+				//cout << "Program index is : " << programIndex << endl;
 
 				Programs::callProgram(programIndex, shell);
 
@@ -186,13 +170,13 @@ void loop(Shell &shell) {
 		}
 
 		programIndex = Programs::checkIfProgram(input);
-		cout << "Program index is : " << programIndex << endl;
+		//cout << "Program index is : " << programIndex << endl;
 
 		Programs::callProgram(programIndex, shell);
 
 
-		cout << input << '\n';
-		cout << shell.getUser() << "@dash " << shell.getDir() << "# ";
+		//cout << input << '\n';
+		cout << shell.getUser() << "@dash " << shell.getDir() << " # ";
 		input = "";
 	}
 }

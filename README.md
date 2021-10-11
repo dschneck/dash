@@ -12,7 +12,7 @@
 - - - -
 - [x] Basic Shell Layout
 - [] implement __movetodir__
-- [] implement __whereami__
+- [x] implement __whereami__
 - [] implement __history__
 - [] implement __byebye__
 - [] implement __replay__
