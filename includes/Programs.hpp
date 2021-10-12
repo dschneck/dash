@@ -22,14 +22,24 @@ using namespace std;
 				return SUCCESS;
 			}
 
+			/*
+That means: Bad address
+run.out(69546,0x10edcfe00) malloc: *** error for object 0x5000000000000000: pointer being freed was not allocated
+run.out(69546,0x10edcfe00) malloc: *** set a breakpoint in malloc_error_break to debug
+			*/
 			static ERROR start(Shell &shell, vector<string> args, int argc) {
-				cout << "calling start" << endl;
 				struct stat st;
-				char *path = (char *) malloc((args[0].size() + 1) * sizeof(char));
-				
+				//char *path = (char *) malloc((args[0].size() + 1) * sizeof(char));
+				//for (int i = 0; i < args[0].size(); i++) {
+					//path[i] = args[0][i];
+
+				//}
+				//path[args[0].size()] = '\0';
+				char * path;
+				cpyString(&path, args[0]);
+
 				if (stat(path, &st) != 0 && S_ISREG(st.st_mode)) {
 					free(path);
-					cout << "error in finding path" << endl;
 					return PATH_DNE;
 				}
 					/* DO STUFF */
@@ -38,29 +48,30 @@ using namespace std;
 
 					char ** new_args = (char **) malloc(sizeof(char *) * size);
 
-					int i = 0;
-					for (string arg: args) {
-						new_args[i] =(char *) malloc((args[i].size() + 1) * sizeof(char));
-						printf("Arg %d is %s\n", i, new_args[i]);
-						i++;
+					for (int i = 0; i < size; i++) {
+						cpyString(&new_args[i], args[i]);
+						//new_args[i] =(char *) malloc((args[i].size() + 1) * sizeof(char));
+						//printf("Arg %d is %s\n", i, new_args[i]);
 					}
 
 					int pid = fork();
 
 					if (!pid) {
-						cout << "bout to call it" << endl;
 						int err = execv(path, new_args);
 						if (err == -1) {
-							printf( "The error generated was %d\n", errno );
-    						printf( "That means: %s\n", strerror( errno ) );
+							//printf( "The error generated was %d\n", errno );
+    						printf( "ERROR: %s\n", strerror(errno));
 						}
+
 						exit(0);
 					}
 
-					else wait(NULL);
+					else {
+						wait(NULL);
+					}
 
 					free(path);
-					// delete individual arrays
+					// free individual arrays
 					for (int i = 0; i < size; i++) {
 						free(new_args[i]);
 					}
@@ -128,6 +139,11 @@ using namespace std;
 			}
 
 		private:
+			static void cpyString(char ** buff, string str) {
+				*buff = (char *) calloc((str.size() + 1) , sizeof(char));
+				strcpy(*buff, str.c_str());
+			}
+
 			static const inline string FUNC_NAMES[] = {
 				"movetodir",
 				"whereami",

@@ -63,6 +63,8 @@ void loop(Shell &shell) {
 			if (pos == string::npos) break;
 		} 
 
+		pargv.push_back("\0");
+
 		Programs::callProgram(programIndex, shell, pargv, pargv.size());
 
 		pargv.clear();
