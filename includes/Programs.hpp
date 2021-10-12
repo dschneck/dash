@@ -22,63 +22,52 @@ using namespace std;
 				return SUCCESS;
 			}
 
-			/*
-That means: Bad address
-run.out(69546,0x10edcfe00) malloc: *** error for object 0x5000000000000000: pointer being freed was not allocated
-run.out(69546,0x10edcfe00) malloc: *** set a breakpoint in malloc_error_break to debug
-			*/
 			static ERROR start(Shell &shell, vector<string> args, int argc) {
 				struct stat st;
-				//char *path = (char *) malloc((args[0].size() + 1) * sizeof(char));
-				//for (int i = 0; i < args[0].size(); i++) {
-					//path[i] = args[0][i];
-
-				//}
-				//path[args[0].size()] = '\0';
 				char * path;
+
 				cpyString(&path, args[0]);
 
 				if (stat(path, &st) != 0 && S_ISREG(st.st_mode)) {
 					free(path);
 					return PATH_DNE;
 				}
-					/* DO STUFF */
-					args.erase(args.begin());
-					int size = args.size();
 
-					char ** new_args = (char **) malloc(sizeof(char *) * size);
+				args.erase(args.begin());
+				int size = args.size();
 
-					for (int i = 0; i < size; i++) {
-						cpyString(&new_args[i], args[i]);
-						//new_args[i] =(char *) malloc((args[i].size() + 1) * sizeof(char));
-						//printf("Arg %d is %s\n", i, new_args[i]);
+				char ** new_args = (char **) calloc(sizeof(char *) , size+1);
+
+				for (int i = 0; i < size; i++) {
+					cpyString(&new_args[i], args[i]);
+				}
+
+				int pid = fork();
+
+				if (!pid) {
+					int err = execv(path, new_args);
+					if (err == -1) {
+						//printf( "The error generated was %d\n", errno );
+						printf( "ERROR: %s\n", strerror(errno));
 					}
 
-					int pid = fork();
+					exit(0);
+				}
 
-					if (!pid) {
-						int err = execv(path, new_args);
-						if (err == -1) {
-							//printf( "The error generated was %d\n", errno );
-    						printf( "ERROR: %s\n", strerror(errno));
-						}
+				else {
+					wait(NULL);
+				}
 
-						exit(0);
-					}
+				// free memory
+				free(path);
 
-					else {
-						wait(NULL);
-					}
+				for (int i = 0; i < size; i++) {
+					free(new_args[i]);
+				}
 
-					free(path);
-					// free individual arrays
-					for (int i = 0; i < size; i++) {
-						free(new_args[i]);
-					}
+				free(new_args);
 
-					free(new_args);
-					return SUCCESS;
-
+				return SUCCESS;
 			}
 
 			static ERROR repeat(Shell &shell, vector<string> args, int argc) {
