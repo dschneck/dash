@@ -2,7 +2,7 @@
 #include "codes.h"
 using namespace std;
 
-#ifndef HISTORY
+#ifndef c_HISTORY
 	class History {
 		private:
 			Node * head, * tail;
@@ -28,5 +28,5 @@ using namespace std;
 			}
 	};
 
-	#define HISTORY
+	#define c_HISTORY
 #endif

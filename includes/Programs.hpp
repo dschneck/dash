@@ -1,4 +1,8 @@
 #include "codes.h"
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <errno.h>
+
 using namespace std;
 
 #ifndef PROGRAMS
@@ -18,26 +22,60 @@ using namespace std;
 				return SUCCESS;
 			}
 
-			static ERROR start(Shell &shell, string args[], int argc) {
+			static ERROR start(Shell &shell, vector<string> args, int argc) {
+				cout << "calling start" << endl;
 				struct stat st;
 				char *path = (char *) malloc((args[0].size() + 1) * sizeof(char));
 				
 				if (stat(path, &st) != 0 && S_ISREG(st.st_mode)) {
 					free(path);
+					cout << "error in finding path" << endl;
 					return PATH_DNE;
 				}
 					/* DO STUFF */
+					args.erase(args.begin());
+					int size = args.size();
+
+					char ** new_args = (char **) malloc(sizeof(char *) * size);
+
+					int i = 0;
+					for (string arg: args) {
+						new_args[i] =(char *) malloc((args[i].size() + 1) * sizeof(char));
+						printf("Arg %d is %s\n", i, new_args[i]);
+						i++;
+					}
+
+					int pid = fork();
+
+					if (!pid) {
+						cout << "bout to call it" << endl;
+						int err = execv(path, new_args);
+						if (err == -1) {
+							printf( "The error generated was %d\n", errno );
+    						printf( "That means: %s\n", strerror( errno ) );
+						}
+						exit(0);
+					}
+
+					else wait(NULL);
+
 					free(path);
+					// delete individual arrays
+					for (int i = 0; i < size; i++) {
+						free(new_args[i]);
+					}
+
+					free(new_args);
 					return SUCCESS;
 
 			}
 
-			static ERROR repeat(Shell &shell, string args[], int argc) {
+			static ERROR repeat(Shell &shell, vector<string> args, int argc) {
 				return SUCCESS;
 
 			}
 
-			static ERROR callProgram(int programIndex, Shell &shell, string args[], int argc) {
+			static ERROR callProgram(int programIndex, Shell &shell, vector<string> args, int argc) {
 				if (programIndex == -1) return PRGM_DNE;
 
 				PROGRAM program = PROGRAM(programIndex);
@@ -55,6 +93,7 @@ using namespace std;
 					case REPLAY:
 						break;
 					case START:
+						start(shell, args, argc);
 						break;
 					case BCKGRND:
 						break;

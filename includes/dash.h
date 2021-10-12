@@ -7,6 +7,7 @@
 	#include <stdio.h>
 	#include <sys/stat.h>
 
+	#include <vector>
 	#include <iostream>
 	#include <iomanip>
 	#include <cstdlib>
