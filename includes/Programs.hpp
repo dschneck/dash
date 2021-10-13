@@ -1,5 +1,6 @@
 #include "codes.h"
 #include <stdlib.h>
+#include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
 
@@ -8,7 +9,6 @@ using namespace std;
 #ifndef PROGRAMS
 	class Programs {
 		public:
-			
 			static ERROR whereami(Shell &shell) {
 				string path = "";
 				path = shell.getDir();
@@ -20,6 +20,75 @@ using namespace std;
 				cout << shell.getDir() << endl;
 
 				return SUCCESS;
+			}
+
+			static ERROR dalek(Shell &shell, string PID) {
+				const char * tmp = {"kill -s KILL "};
+				int len = strlen(tmp);
+				int size = PID.size();
+
+				char * command = (char *) malloc(sizeof(char) * len + size + 1); 
+
+				for (int i = 0; i < len; i++) {
+					command[i] = tmp[i];
+				}
+
+				for (int i = 0; i < size; i++) { 
+					command[len + i] = PID[i];  
+				}
+
+				command[len + size] = '\0';
+				cout << '\n' << command << endl;
+
+				system(command);
+				return SUCCESS;
+
+			}
+
+			static ERROR background(Shell &shell, vector<string> args, int argc) {
+				struct stat st;
+				char * path;
+
+				cpyString(&path, args[0]);
+
+				if (stat(path, &st) != 0 && S_ISREG(st.st_mode)) {
+					free(path);
+					return PATH_DNE;
+				}
+
+				args.erase(args.begin());
+
+				char ** new_args = (char **) calloc(sizeof(char *) , argc+1);
+
+				for (int i = 0; i < argc; i++) {
+					cpyString(&new_args[i], args[i]);
+				}
+
+				int pid = fork();
+
+				if (!pid) {
+					cout << "\nPID: " << getpid() << endl;
+
+					int err = execvp(path, new_args);
+					if (err == -1) {
+						//printf( "The error generated was %d\n", errno );
+						printf( "ERROR: %s\n", strerror(errno));
+					}
+
+					exit(0);
+				}
+
+				// free memory
+				free(path);
+
+				for (int i = 0; i < argc; i++) {
+					free(new_args[i]);
+				}
+
+				free(new_args);
+
+				return SUCCESS;
+
 			}
 
 			static ERROR start(Shell &shell, vector<string> args, int argc) {
@@ -34,18 +103,17 @@ using namespace std;
 				}
 
 				args.erase(args.begin());
-				int size = args.size();
 
-				char ** new_args = (char **) calloc(sizeof(char *) , size+1);
+				char ** new_args = (char **) calloc(sizeof(char *) , argc+1);
 
-				for (int i = 0; i < size; i++) {
+				for (int i = 0; i < argc; i++) {
 					cpyString(&new_args[i], args[i]);
 				}
 
 				int pid = fork();
 
 				if (!pid) {
-					int err = execv(path, new_args);
+					int err = execvp(path, new_args);
 					if (err == -1) {
 						//printf( "The error generated was %d\n", errno );
 						printf( "ERROR: %s\n", strerror(errno));
@@ -61,7 +129,7 @@ using namespace std;
 				// free memory
 				free(path);
 
-				for (int i = 0; i < size; i++) {
+				for (int i = 0; i < argc; i++) {
 					free(new_args[i]);
 				}
 
@@ -96,8 +164,10 @@ using namespace std;
 						start(shell, args, argc);
 						break;
 					case BCKGRND:
+						background(shell, args, argc);
 						break;
 					case DALEK:
+						dalek(shell, args[0]);
 						break;
 					case REPEAT:
 						repeat(shell, args, argc);

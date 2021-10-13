@@ -16,9 +16,9 @@
 - [] implement __history__
 - [] implement __byebye__
 - [] implement __replay__
-- [] implement __start__
-- [] implement __background__
-- [] implement __dalek__
+- [x] implement __start__
+- [x] implement __background__
+- [x] implement __dalek__
 - [] implement __repeat__
 - [] implement __dalekall__
 
