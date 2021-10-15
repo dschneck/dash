@@ -22,6 +22,12 @@ using namespace std;
 			}
 
 			ERROR addToEnd(Node * node) {
+				tail->next = node;
+				node->prev = tail;
+				node->next = head;
+				this->tail = node;
+				this->head->prev = node;
+
 				return SUCCESS;
 			}
 
