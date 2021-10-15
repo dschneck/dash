@@ -1,6 +1,7 @@
 #include "codes.h"
 #include "History.hpp"
 #include "ProcessStack.hpp"
+#include <string.h>
 using namespace std;
 
 #ifndef SHELL

@@ -11,7 +11,7 @@ using namespace std;
 		public:
 
 			static ERROR repeat(Shell &shell, vector<string> args, int argc) {
-				if (args.size() < 3) return NO_PRGM;
+				if (args.size() < 2) return NO_PRGM;
 				int programIndex, n = toInt(args[0]);
 
 				args.erase(args.begin(), args.begin()+1);
