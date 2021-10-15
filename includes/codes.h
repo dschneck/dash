@@ -5,7 +5,8 @@
 		FILE_DNE,
 		PRGM_DNE,
 		PATH_DNE,
-		STACK_EMPTY
+		STACK_EMPTY,
+		NO_PRGM
 	};
 
 	enum PROGRAM {

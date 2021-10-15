@@ -9,6 +9,22 @@ using namespace std;
 #ifndef PROGRAMS
 	class Programs {
 		public:
+
+			static ERROR repeat(Shell &shell, vector<string> args, int argc) {
+				if (args.size() < 3) return NO_PRGM;
+				int programIndex, n = toInt(args[0]);
+
+				args.erase(args.begin(), args.begin()+1);
+				argc = args.size();
+
+				for (int i = 0; i < n; i++) {
+					background(shell, args, argc);
+				}	
+
+				cout << endl;
+				return SUCCESS;
+			}
+
 			static ERROR movetodir(Shell &shell, vector<string> args) {
 				struct stat stats;
 				char * path;
@@ -57,22 +73,18 @@ using namespace std;
 				}
 
 				command[len + size] = '\0';
-				//cout << '\n' << command << endl;
 
+				shell.pstack->pop();
 				system(command);
 				return SUCCESS;
 
 			}
 
 			static ERROR dalekall(Shell &shell) {
-				cout << "Trying to dalekall"  <<endl;
-
 				int size = shell.pstack->getCount();
 				vector<string> pids = shell.pstack->popall();
 
-				cout << "Going into the loop" << endl;
 				for (int i = 0; i < size; i++) {
-					cout << "killing " << pids[i] << endl;
 					dalek(shell, pids[i]);
 				}
 
@@ -85,11 +97,6 @@ using namespace std;
 
 				cpyString(&path, args[0]);
 				stat(path, &stats);
-
-				if (!S_ISDIR(stats.st_mode)) {
-					free(path);
-					return PATH_DNE;
-				}
 
 				args.erase(args.begin());
 
@@ -177,11 +184,6 @@ using namespace std;
 				return SUCCESS;
 			}
 
-			static ERROR repeat(Shell &shell, vector<string> args, int argc) {
-				return SUCCESS;
-
-			}
-
 			static ERROR callProgram(int programIndex, Shell &shell, vector<string> args, int argc) {
 				if (programIndex == -1) return PRGM_DNE;
 
@@ -242,6 +244,18 @@ using namespace std;
 			static void cpyString(char ** buff, string str) {
 				*buff = (char *) calloc((str.size() + 1) , sizeof(char));
 				strcpy(*buff, str.c_str());
+			}
+
+			static int toInt(string n) {
+				int size = n.size();
+				int ret = 0;
+
+				for (int i = 0; i < size; i++) {
+					ret *= 10;
+					ret += (n[i] - '0');
+				}
+
+				return ret;
 			}
 
 			static const inline string FUNC_NAMES[] = {
