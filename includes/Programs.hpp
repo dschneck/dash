@@ -9,6 +9,25 @@ using namespace std;
 #ifndef PROGRAMS
 	class Programs {
 		public:
+			static ERROR movetodir(Shell &shell, vector<string> args) {
+				struct stat stats;
+				char * path;
+
+				cpyString(&path, args[0]);
+    			stat(path, &stats);
+
+    			// Check for file existence
+    			if (!S_ISDIR(stats.st_mode)) {
+					cout << path << " didn't exist" << endl;
+					free(path);
+					return PATH_DNE;
+				}
+
+				shell.setDir(path);
+				free(path);
+				return SUCCESS;
+			}
+
 			static ERROR whereami(Shell &shell) {
 				string path = "";
 				path = shell.getDir();
@@ -61,12 +80,13 @@ using namespace std;
 			}
 
 			static ERROR background(Shell &shell, vector<string> args, int argc) {
-				struct stat st;
+				struct stat stats;
 				char * path;
 
 				cpyString(&path, args[0]);
+				stat(path, &stats);
 
-				if (stat(path, &st) != 0 && S_ISREG(st.st_mode)) {
+				if (!S_ISDIR(stats.st_mode)) {
 					free(path);
 					return PATH_DNE;
 				}
@@ -169,6 +189,7 @@ using namespace std;
 
 				switch (program) {
 					case MVE2DIR:
+						movetodir(shell, args);
 						break;
 					case WHREAMI:
 						whereami(shell);

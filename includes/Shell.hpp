@@ -32,7 +32,7 @@ using namespace std;
 			}
 
 			void setDir(char * dir) {
-				//this->CURRENTDIR = dir;
+				strcpy(this->CURRENTDIR, dir);
 			}
 
 			string getUser() {

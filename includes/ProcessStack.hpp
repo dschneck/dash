@@ -8,7 +8,6 @@ class ProcessStack {
 		int count;
 
 		string toString(int pid) {
-			cout << "\nIn toString" << endl;
 			int tmp;
 			string ret = "";
 
@@ -21,26 +20,9 @@ class ProcessStack {
 			string realRet = "";
 			int n = ret.size();
 			for (int i = n-1; i >= 0; i--) {
-				cout << "got em with " << i << endl;
 				realRet += ret[i];
 			}
-			/*
-			//TODO: need to reverse string
-			int m = n/2;
-			cout << "size is " << n << " and m is " << m << endl;
-			cout << ret[2] << endl;
 
-			cout << "reversing : " << ret << endl; 
-			for (int i = 0; i < m; i++) {
-				char tmp = ret[i];
-				cout << "bout to vreak: " <<  n-i-1 << endl;
-				ret[i] = ret[n-i-1];
-				ret[n-i-1] = tmp;
-			}
-			*/
-
-			//cout << format("Here is the pid string: %s", ret) << endl;
-			cout << "returning with: " << realRet << endl;
 			return realRet;
 		}
 

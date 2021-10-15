@@ -11,7 +11,8 @@
 ## TODO ##
 - - - -
 - [x] Basic Shell Layout
-- [] implement __movetodir__
+- [] clean up/document code
+- [x] implement __movetodir__
 - [x] implement __whereami__
 - [] implement __history__
 - [] implement __byebye__
