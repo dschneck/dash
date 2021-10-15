@@ -6,17 +6,23 @@ using namespace std;
 	class History {
 		private:
 			Node * head, * tail;
+			int count;
 
 		public:
 			History(Node * head, Node  * tail) {
 				this->head = head;
 				this->head = tail;
+				this->count = 1;
 			}
 
 			History(string filename) {
 				//TODO: fix this
 				this->head = NULL;
 				this->tail = NULL;
+			}
+
+			ERROR addToEnd(Node * node) {
+				return SUCCESS;
 			}
 
 			ERROR saveToFile() {

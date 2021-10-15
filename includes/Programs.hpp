@@ -45,6 +45,21 @@ using namespace std;
 
 			}
 
+			static ERROR dalekall(Shell &shell) {
+				cout << "Trying to dalekall"  <<endl;
+
+				int size = shell.pstack->getCount();
+				vector<string> pids = shell.pstack->popall();
+
+				cout << "Going into the loop" << endl;
+				for (int i = 0; i < size; i++) {
+					cout << "killing " << pids[i] << endl;
+					dalek(shell, pids[i]);
+				}
+
+				return SUCCESS;
+			}
+
 			static ERROR background(Shell &shell, vector<string> args, int argc) {
 				struct stat st;
 				char * path;
@@ -67,7 +82,6 @@ using namespace std;
 				int pid = fork();
 
 				if (!pid) {
-					cout << "\nPID: " << getpid() << endl;
 
 					int err = execvp(path, new_args);
 					if (err == -1) {
@@ -76,6 +90,11 @@ using namespace std;
 					}
 
 					exit(0);
+				}
+
+				else {
+					cout << "PID: " << pid << endl;
+					shell.pstack->push(pid);
 				}
 
 				// free memory
@@ -173,6 +192,7 @@ using namespace std;
 						repeat(shell, args, argc);
 						break;
 					case DALEKALL:
+						dalekall(shell);
 						break;
 					default:
 						return PRGM_DNE;

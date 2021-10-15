@@ -1,5 +1,6 @@
 #include "codes.h"
 #include "History.hpp"
+#include "ProcessStack.hpp"
 using namespace std;
 
 #ifndef SHELL
@@ -8,17 +9,18 @@ using namespace std;
 			char CURRENTDIR[100];
 			string USER;
 			pid_t PID;
-			int count;
-			History *history;
 
 		public:
+			History *history;
+			ProcessStack * pstack;
+
 			Shell(string user) {
 				getcwd(this->CURRENTDIR, 100);
 				this->USER = user;
 				this->PID = getpid();
 
-				this->count = 0;
-				this->history = new History(new Node(count), NULL);
+				this->pstack = new ProcessStack();
+				this->history = new History(new Node(0), NULL);
 			}
 
 			Shell(string user, string filename) {
@@ -26,8 +28,7 @@ using namespace std;
 				this->USER = user;
 
 				this->PID = getpid();
-				this->count = 0;
-				this->history = new History(new Node(count), NULL);
+				this->history = new History(new Node(0), NULL);
 			}
 
 			void setDir(char * dir) {

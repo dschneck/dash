@@ -4,7 +4,8 @@
 		NO_PATH_FOUND,
 		FILE_DNE,
 		PRGM_DNE,
-		PATH_DNE
+		PATH_DNE,
+		STACK_EMPTY
 	};
 
 	enum PROGRAM {
