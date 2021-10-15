@@ -20,7 +20,7 @@
 - [x] implement __background__
 - [x] implement __dalek__
 - [] implement __repeat__
-- [] implement __dalekall__
+- [x] implement __dalekall__
 
 ## Notes ##
 - - - -

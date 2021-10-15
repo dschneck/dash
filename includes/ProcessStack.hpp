@@ -9,29 +9,39 @@ class ProcessStack {
 
 		string toString(int pid) {
 			cout << "\nIn toString" << endl;
-			int tmp, i = 1;
+			int tmp;
 			string ret = "";
 
-			cout  << "Going  into  the while loop with pid " << pid << endl;
-			while ((pid % i) != 0) {
-				cout << "got inside the loop" << endl;
-				tmp  = pid % i;
-				cout << "tmp is : " << tmp << endl;
+			while (pid != 0) {
+				tmp = pid % 10;
+				pid /= 10;
 				ret += (tmp + '0');
-				cout << "ret is " << ret << endl;
-				i *= 10;
 			}
 
-			//TODO: need to reverse string
+			string realRet = "";
 			int n = ret.size();
+			for (int i = n-1; i >= 0; i--) {
+				cout << "got em with " << i << endl;
+				realRet += ret[i];
+			}
+			/*
+			//TODO: need to reverse string
+			int m = n/2;
+			cout << "size is " << n << " and m is " << m << endl;
+			cout << ret[2] << endl;
 
 			cout << "reversing : " << ret << endl; 
-			for (int i = 0; i < i/2; i++) {
+			for (int i = 0; i < m; i++) {
+				char tmp = ret[i];
+				cout << "bout to vreak: " <<  n-i-1 << endl;
 				ret[i] = ret[n-i-1];
+				ret[n-i-1] = tmp;
 			}
+			*/
 
 			//cout << format("Here is the pid string: %s", ret) << endl;
-			return ret;
+			cout << "returning with: " << realRet << endl;
+			return realRet;
 		}
 
 	public:
@@ -50,7 +60,7 @@ class ProcessStack {
 		}
 
 		ERROR pop()  {
-			if (pidStack.top() != NULL)  {
+			if (!pidStack.empty())  {
 				pidStack.pop();
 				count--;
 				return SUCCESS;
@@ -63,7 +73,7 @@ class ProcessStack {
 			vector<string> ret; 
 
 			cout << "Exterminating " << count << " processes:";
-			while (pidStack.top() != NULL) {
+			while (!pidStack.empty()) {
 				int pid = pidStack.top();
 				pidStack.pop();
 				string tmp = toString(pid);
@@ -73,5 +83,6 @@ class ProcessStack {
 			}
 
 			cout << endl;
+			return ret;
 		}
 };

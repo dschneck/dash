@@ -38,7 +38,7 @@ using namespace std;
 				}
 
 				command[len + size] = '\0';
-				cout << '\n' << command << endl;
+				//cout << '\n' << command << endl;
 
 				system(command);
 				return SUCCESS;
