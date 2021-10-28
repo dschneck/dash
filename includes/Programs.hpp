@@ -10,9 +10,21 @@ using namespace std;
 	class Programs {
 		public:
 
+			static ERROR byebye(Shell &shell) {
+			// Free all dynamically allocated memory
+			// Save History to file
+				exit(0);
+				shell.history->freeNodeCommands();
+			}
+
+			static ERROR history(Shell &shell, vector<string> args) {
+				shell.history->printHistory();
+				return SUCCESS;
+			}
+
 			static ERROR repeat(Shell &shell, vector<string> args, int argc) {
 				if (args.size() < 2) return NO_PRGM;
-				int programIndex, n = toInt(args[0]);
+				int n = toInt(args[0]);
 
 				args.erase(args.begin(), args.begin()+1);
 				argc = args.size();
@@ -197,8 +209,10 @@ using namespace std;
 						whereami(shell);
 						break;
 					case BYEBYE:
+						byebye(shell);
 						break;
 					case HISTORY:
+						history(shell, args);
 						break;
 					case REPLAY:
 						break;

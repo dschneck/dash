@@ -21,7 +21,7 @@ using namespace std;
 				this->PID = getpid();
 
 				this->pstack = new ProcessStack();
-				this->history = new History(new Node(0), NULL);
+				this->history = new History();
 			}
 
 			Shell(string user, string filename) {
@@ -29,7 +29,7 @@ using namespace std;
 				this->USER = user;
 
 				this->PID = getpid();
-				this->history = new History(new Node(0), NULL);
+				this->history = new History();
 			}
 
 			void setDir(char * dir) {

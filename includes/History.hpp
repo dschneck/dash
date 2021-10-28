@@ -9,10 +9,10 @@ using namespace std;
 			int count;
 
 		public:
-			History(Node * head, Node  * tail) {
-				this->head = head;
-				this->head = tail;
-				this->count = 1;
+			History() {
+				this->head = NULL;
+				this->head = NULL;
+				this->count = 0;
 			}
 
 			History(string filename) {
@@ -21,12 +21,97 @@ using namespace std;
 				this->tail = NULL;
 			}
 
-			ERROR addToEnd(Node * node) {
-				tail->next = node;
-				node->prev = tail;
-				node->next = head;
-				this->tail = node;
-				this->head->prev = node;
+			ERROR clearHistory() {
+				return SUCCESS;
+			}
+
+			void printHistory() {
+				if (tail == NULL || head == NULL) {
+					cout << "History is empty." << endl;
+					return;
+				}
+
+				Node * node = tail;
+
+				while (node != head) {
+					cout << node->getIndex() << ": " << node->getCommand() << endl;
+					node = node->getPrev();
+				}
+
+				cout << node->getIndex() << ": " << node->getCommand() << endl;
+
+			}
+
+			void freeNodeCommands() {
+				Node * node  = head;
+
+				while (node != tail) {
+					node->clean();
+					node = node->getNext();
+
+				}
+
+				node->clean();
+			}
+
+			ERROR addToEnd(char * command) {
+				printf("got em");
+				Node * node = new Node(count++, command);
+				printf("A");
+				if (head == NULL) {
+				printf("H");
+					if (tail == NULL) {
+				printf("E");
+						// both null
+						tail = node;
+
+					}
+
+					else {
+						// head null
+				printf("L");
+						head = tail;
+						head->setNext(node);
+						head->setPrev(node);
+
+						node->setNext(head);
+						node->setPrev(head);
+						tail = node;
+
+					}
+
+				}
+
+				printf("L");
+				// general case
+				tail->setNext(node);
+				head->setPrev(node);
+				node->setPrev(tail);
+				node->setNext(head);
+				tail = node;
+				printf("O");
+				/*
+				case where both null
+				case where head null
+				general case
+
+				head: x1
+				tail: x4
+				
+				x1->x2->x3->x4
+
+				if (head == NULL) {
+					head = node;
+					tail = node;
+					head->setPrev(tail);
+				}
+
+				tail->setNext(node);
+				node->setPrev(tail);
+				node->setNext(head);
+				tail = node;
+				head->setPrev(node);
+				*/
 
 				return SUCCESS;
 			}

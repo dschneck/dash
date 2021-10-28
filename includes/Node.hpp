@@ -1,15 +1,21 @@
 #include "codes.h"
+#include <string.h>
 using namespace std;
 
 #ifndef NODE
 	class Node {
 		private:
-			int val;
+			int index;
+			char * command;
 			Node * next, * prev;
 
 		public:
-			int getVal() {
-				return this->val;
+			int getIndex() {
+				return this->index;
+			}
+
+			string getCommand() {
+				return this->command;
 			}
 
 			Node * getNext() {
@@ -30,9 +36,17 @@ using namespace std;
 				return SUCCESS;
 			}
 
-			Node(int val) {
-				this->val = val;
+			ERROR clean() {
+				free(command);
+				return SUCCESS;
+			}
+
+			Node(int index, char * command) {
+				this->command = (char*) malloc(sizeof(char) * (strlen(command) + 1));
+				this->index = index;
+				strcpy(this->command, command);
 				this->next = NULL;
+				this->prev = NULL;
 			}
 	};
 	#define NODE
