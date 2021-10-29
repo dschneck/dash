@@ -13,14 +13,16 @@ using namespace std;
 				this->head = NULL;
 				this->head = NULL;
 				this->count = 0;
+				cout << "in history" << endl;
 			}
 
+			/*
 			History(string filename) {
 				//TODO: fix this
 				this->head = NULL;
 				this->tail = NULL;
 			}
-
+			*/
 			ERROR clearHistory() {
 				return SUCCESS;
 			}
@@ -33,12 +35,15 @@ using namespace std;
 
 				Node * node = tail;
 
-				while (node != head) {
-					cout << node->getIndex() << ": " << node->getCommand() << endl;
+				while (node->getPrev() != tail) {
+					cout << node->getIndex() << ": ";
+					for (auto &str: node->getCommand()) {
+						cout << str << " ";
+					}
+
+					cout << endl;
 					node = node->getPrev();
 				}
-
-				cout << node->getIndex() << ": " << node->getCommand() << endl;
 
 			}
 
@@ -54,14 +59,15 @@ using namespace std;
 				node->clean();
 			}
 
-			ERROR addToEnd(char * command) {
-				printf("got em");
-				Node * node = new Node(count++, command);
-				printf("A");
+			ERROR addToEnd(int programIndex, vector<string> command) {
+				cout << "gotem ";
+				Node * node = new Node(count++, programIndex, command);
+				cout << "daffs";
+				cout << " A ";
 				if (head == NULL) {
-				printf("H");
+				cout << "H ";
 					if (tail == NULL) {
-				printf("E");
+				cout << "E ";
 						// both null
 						tail = node;
 
@@ -69,7 +75,7 @@ using namespace std;
 
 					else {
 						// head null
-				printf("L");
+				cout << "L1 ";
 						head = tail;
 						head->setNext(node);
 						head->setPrev(node);
@@ -82,14 +88,14 @@ using namespace std;
 
 				}
 
-				printf("L");
+				cout << "L ";
 				// general case
 				tail->setNext(node);
 				head->setPrev(node);
 				node->setPrev(tail);
 				node->setNext(head);
 				tail = node;
-				printf("O");
+				cout << "O ";
 				/*
 				case where both null
 				case where head null

@@ -5,8 +5,8 @@ using namespace std;
 #ifndef NODE
 	class Node {
 		private:
-			int index;
-			char * command;
+			int index, programIndex;
+			vector<string> command;
 			Node * next, * prev;
 
 		public:
@@ -14,7 +14,7 @@ using namespace std;
 				return this->index;
 			}
 
-			string getCommand() {
+			vector<string> getCommand() {
 				return this->command;
 			}
 
@@ -37,16 +37,26 @@ using namespace std;
 			}
 
 			ERROR clean() {
-				free(command);
+				//free(command);
 				return SUCCESS;
 			}
 
-			Node(int index, char * command) {
+			Node(int index, int programIndex, vector<string> command) {
+				cout << "I;m in node" << endl;
+				this->index = index;
+				this->programIndex = programIndex;
+				std::copy(command.begin(), command.end(), back_inserter(this->command));
+				this->next = NULL;
+				this->prev = NULL;
+				cout << "I;m leaving node" << endl;
+				
+				/*
 				this->command = (char*) malloc(sizeof(char) * (strlen(command) + 1));
 				this->index = index;
 				strcpy(this->command, command);
 				this->next = NULL;
 				this->prev = NULL;
+				*/
 			}
 	};
 	#define NODE

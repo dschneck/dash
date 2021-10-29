@@ -29,10 +29,6 @@ void loop(Shell &shell) {
 
 		programIndex = Programs::checkIfProgram(input.substr(0, pos));
 		//cout << "\ninput is" << len << endl;
-		if (len != 0) {
-			printf("got here bitch");
-			shell.history->addToEnd((char *) input.c_str());
-		}
 
 		input = input.substr(pos+1, len-1);
 
@@ -43,6 +39,11 @@ void loop(Shell &shell) {
 
 			if ((size_t) pos == string::npos) break;
 		} 
+
+		if (programIndex != -1) {
+			cout << "what the fuck" << endl;
+			shell.history->addToEnd(programIndex, pargv);
+		}
 
 		Programs::callProgram(programIndex, shell, pargv, pargv.size());
 		pargv.clear();
