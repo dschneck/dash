@@ -29,10 +29,7 @@ using namespace std;
 
 			void printHistory() {
 				if (tail == NULL || head == NULL) {
-					cout << "History is empty." << endl;
-					return;
-				}
-
+					cout << "History is empty." << endl; return; } 
 				Node * node = tail;
 
 				while (node->getPrev() != tail) {
@@ -62,6 +59,7 @@ using namespace std;
 			ERROR addToEnd(int programIndex, vector<string> command) {
 				cout << "gotem ";
 				Node * node = new Node(count++, programIndex, command);
+				/*
 				cout << "daffs";
 				cout << " A ";
 				if (head == NULL) {

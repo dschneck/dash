@@ -1,8 +1,7 @@
 #include "dash.h"
 using namespace std;
 
-/* FUNCTIONS */
-void loop(Shell &shell);
+/* FUNCTIONS */ void loop(Shell &shell);
 
 int main() {
 	Shell shell("user");
@@ -28,7 +27,10 @@ void loop(Shell &shell) {
 		int pos = input.find(' ');
 
 		programIndex = Programs::checkIfProgram(input.substr(0, pos));
-		//cout << "\ninput is" << len << endl;
+
+		if (programIndex != -1) {
+			shell.history.push_back(input);
+		}
 
 		input = input.substr(pos+1, len-1);
 
@@ -40,10 +42,6 @@ void loop(Shell &shell) {
 			if ((size_t) pos == string::npos) break;
 		} 
 
-		if (programIndex != -1) {
-			cout << "what the fuck" << endl;
-			shell.history->addToEnd(programIndex, pargv);
-		}
 
 		Programs::callProgram(programIndex, shell, pargv, pargv.size());
 		pargv.clear();

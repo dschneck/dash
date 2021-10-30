@@ -14,11 +14,12 @@ using namespace std;
 			// Free all dynamically allocated memory
 			// Save History to file
 				exit(0);
-				shell.history->freeNodeCommands();
+				//shell.history->freeNodeCommands();
 			}
 
 			static ERROR history(Shell &shell, vector<string> args) {
-				shell.history->printHistory();
+				//shell.history->printHistory();
+				shell.printHistory();
 				return SUCCESS;
 			}
 

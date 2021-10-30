@@ -12,7 +12,8 @@ using namespace std;
 			pid_t PID;
 
 		public:
-			History *history;
+			//History *history;
+			vector<string> history;
 			ProcessStack * pstack;
 
 			Shell(string user) {
@@ -21,7 +22,7 @@ using namespace std;
 				this->PID = getpid();
 
 				this->pstack = new ProcessStack();
-				this->history = new History();
+				//this->history = new History();
 			}
 
 			Shell(string user, string filename) {
@@ -29,11 +30,27 @@ using namespace std;
 				this->USER = user;
 
 				this->PID = getpid();
-				this->history = new History();
+				this->pstack = new ProcessStack();
+				//this->history = new History();
 			}
 
 			void setDir(char * dir) {
 				strcpy(this->CURRENTDIR, dir);
+			}
+
+			void printHistory() {
+				int size = history.size();
+
+				for (int i = size-1; i >= 0; i--) {
+					cout << size-i-1 << ": " << history[i] << endl;
+				}
+
+				cout << endl;
+			}
+
+			ERROR clearHistory() {
+				return SUCCESS;
+
 			}
 
 			string getUser() {
