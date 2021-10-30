@@ -1,5 +1,4 @@
 #include "codes.h"
-#include "History.hpp"
 #include "ProcessStack.hpp"
 #include <string.h>
 using namespace std;
@@ -12,7 +11,6 @@ using namespace std;
 			pid_t PID;
 
 		public:
-			//History *history;
 			vector<string> history;
 			ProcessStack * pstack;
 
@@ -22,7 +20,6 @@ using namespace std;
 				this->PID = getpid();
 
 				this->pstack = new ProcessStack();
-				//this->history = new History();
 			}
 
 			Shell(string user, string filename) {
@@ -31,7 +28,6 @@ using namespace std;
 
 				this->PID = getpid();
 				this->pstack = new ProcessStack();
-				//this->history = new History();
 			}
 
 			void setDir(char * dir) {
@@ -44,8 +40,6 @@ using namespace std;
 				for (int i = size-1; i >= 0; i--) {
 					cout << size-i-1 << ": " << history[i] << endl;
 				}
-
-				cout << endl;
 			}
 
 			ERROR clearHistory() {

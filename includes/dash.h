@@ -14,8 +14,6 @@
 
 	#include "Shell.hpp"
 	#include "Programs.hpp"
-	#include "Node.hpp"
-	#include "History.hpp"
 	#include "codes.h"
 
 	/* FUNCTIONS */

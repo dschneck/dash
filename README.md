@@ -7,6 +7,16 @@
 # Dash #
 - - - -
 ... is my own shell - **David Again SHell** :thumbsup:
+To run, run the following commands:
+	make
+	./run.out
+
+There will be warnings but everything is fine.
+
+If you'd like to load a history file, set that as the first and only argument.
+
+Ex.
+	./run.out history.txt
 
 ## TODO ##
 - - - -
@@ -14,8 +24,8 @@
 - [] clean up/document code
 - [x] implement __movetodir__
 - [x] implement __whereami__
-- [] implement __history__
-- [] implement __byebye__
+- [x] implement __history__
+- [x] implement __byebye__
 - [] implement __replay__
 - [x] implement __start__
 - [x] implement __background__
@@ -23,8 +33,14 @@
 - [x] implement __repeat__
 - [x] implement __dalekall__
 
-## Notes ##
-- - - -
-* program should have internal variable **currentdir**
-* program saves the history to external file (when exiting), and load it (when starting the shell)
-*  if the argument starts with "/" the shell should interpret it as a full path
+## Extra Credit ##
+
+# dalekall
+Works exactly like the doc describes. No arguments, exterminates all of the processes spawned by shell
+
+# repeat
+
+Works exactly like the doc describes. Only will run programs that are external to this shell (i.e. anything that you would use start or background to call, like ls, vim, grep, etc.) 
+Ex. repeat 4 /bin/ls
+
+It would print the current directory 4 times

@@ -2,6 +2,7 @@
 	enum ERROR {
 		SUCCESS = 0,
 		NO_PATH_FOUND,
+		MISSING_ARG,
 		FILE_DNE,
 		PRGM_DNE,
 		PATH_DNE,

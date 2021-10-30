@@ -14,22 +14,67 @@ using namespace std;
 	class Programs {
 		public:
 
+			static ERROR replay(Shell &shell, vector<string> args) {
+				cout << "got here boi" << endl;
+				if (args.size() < 1) {
+					cout << "Missing argument, need index from the output of the history command" << endl;
+					return MISSING_ARG;
+				}
+
+				int index = toInt(args[0]);
+				string input = shell.history[index + shell.history.size()-1];
+				cout << input << endl;
+				int len = input.size();
+				int pos = input.find(' ');
+				vector<string> pargv;
+
+				int programIndex = Programs::checkIfProgram(input.substr(0, pos));
+
+				input = input.substr(pos+1, len-1);
+
+				while ((len = input.size()) != 0) {
+					pos = input.find(' ');
+					pargv.push_back(input.substr(0, pos));
+					input = input.substr(pos+1, len-1);
+
+					if ((size_t) pos == string::npos) break;
+				} 
+
+				Programs::callProgram(programIndex, shell, pargv, pargv.size());
+				pargv.clear();
+
+				return SUCCESS;
+			}
+
 			static void byebye(Shell &shell) {
-			// Free all dynamically allocated memory
-			// Save History to file
+				// Free all dynamically allocated memory
+				// Save History to file
+				/*
 				ofstream output_file("./history.txt");
-    			ostream_iterator<std::string> output_iterator(output_file, "\n");
+    			ostream_iterator<string> output_iterator(output_file, "\n");
     			copy(shell.history.begin(), shell.history.end(), output_iterator);
+				*/
+
+				cout << "Exiting and writing history to history.txt" << endl;
+				ofstream file;
+				file.open("history.txt");
+
+				for(int i  =0; i<shell.history.size(); i++){
+					file<<shell.history[i]<<endl;
+				}
+
+				file.close();
 				exit(0);
 			}
 
 			static ERROR history(Shell &shell, vector<string> args) {
-				//shell.history->printHistory();
-				shell.printHistory();
 
 				if (args.size() >= 1 && args[0] == "-c") {
 					shell.clearHistory();
+					return SUCCESS;
 				}
+				
+				shell.printHistory();
 				
 				return SUCCESS;
 			}
@@ -227,6 +272,7 @@ using namespace std;
 						history(shell, args);
 						break;
 					case REPLAY:
+						replay(shell, args);
 						break;
 					case START:
 						start(shell, args, argc);
