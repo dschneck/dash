@@ -3,9 +3,16 @@ using namespace std;
 
 /* FUNCTIONS */ void loop(Shell &shell);
 
-int main() {
-	Shell shell("user");
-	loop(shell);
+int main(int argc, const char * argv[]) {
+	if (argc < 1) {
+		Shell shell("user", argv[1]);
+		loop(shell);
+	}
+
+	else {
+		Shell shell("user");
+		loop(shell);
+	}
 
 	return 0;
 }

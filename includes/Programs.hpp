@@ -55,12 +55,14 @@ using namespace std;
     			copy(shell.history.begin(), shell.history.end(), output_iterator);
 				*/
 
+				shell.history.pop_back();
 				cout << "Exiting and writing history to history.txt" << endl;
 				ofstream file;
 				file.open("history.txt");
 
-				for(int i  =0; i<shell.history.size(); i++){
-					file<<shell.history[i]<<endl;
+				int size = shell.history.size();
+				for (int i  =0; i < size; i++){
+					file << shell.history[i] << endl;
 				}
 
 				file.close();
@@ -206,7 +208,7 @@ using namespace std;
 
 			}
 
-			static ERROR start(Shell &shell, vector<string> args, int argc) {
+			static ERROR start(vector<string> args, int argc) {
 				struct stat st;
 				char * path;
 
@@ -275,7 +277,7 @@ using namespace std;
 						replay(shell, args);
 						break;
 					case START:
-						start(shell, args, argc);
+						start(args, argc);
 						break;
 					case BCKGRND:
 						background(shell, args, argc);

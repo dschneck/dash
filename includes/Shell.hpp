@@ -1,6 +1,7 @@
 #include "codes.h"
 #include "ProcessStack.hpp"
 #include <string.h>
+#include <fstream>
 using namespace std;
 
 #ifndef SHELL
@@ -28,6 +29,15 @@ using namespace std;
 
 				this->PID = getpid();
 				this->pstack = new ProcessStack();
+
+				ifstream in(filename);
+				string str;
+				// Read the next line from File untill it reaches the end.
+				while (getline(in, str)) {
+					// Line contains string of length > 0 then save it in vector
+					if (str.size() > 0)
+						history.push_back(str);
+				}
 			}
 
 			void setDir(char * dir) {
