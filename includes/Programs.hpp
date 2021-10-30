@@ -3,6 +3,10 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <fstream>
+#include <iterator>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -10,16 +14,23 @@ using namespace std;
 	class Programs {
 		public:
 
-			static ERROR byebye(Shell &shell) {
+			static void byebye(Shell &shell) {
 			// Free all dynamically allocated memory
 			// Save History to file
+				ofstream output_file("./history.txt");
+    			ostream_iterator<std::string> output_iterator(output_file, "\n");
+    			copy(shell.history.begin(), shell.history.end(), output_iterator);
 				exit(0);
-				//shell.history->freeNodeCommands();
 			}
 
 			static ERROR history(Shell &shell, vector<string> args) {
 				//shell.history->printHistory();
 				shell.printHistory();
+
+				if (args.size() >= 1 && args[0] == "-c") {
+					shell.clearHistory();
+				}
+				
 				return SUCCESS;
 			}
 

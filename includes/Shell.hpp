@@ -49,8 +49,8 @@ using namespace std;
 			}
 
 			ERROR clearHistory() {
+				history.clear();
 				return SUCCESS;
-
 			}
 
 			string getUser() {

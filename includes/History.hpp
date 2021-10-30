@@ -24,6 +24,7 @@ using namespace std;
 			}
 			*/
 			ERROR clearHistory() {
+				//shell.clearHistory();
 				return SUCCESS;
 			}
 
@@ -41,7 +42,6 @@ using namespace std;
 					cout << endl;
 					node = node->getPrev();
 				}
-
 			}
 
 			void freeNodeCommands() {
